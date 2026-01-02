@@ -9,9 +9,7 @@ import java.time.Instant;
 @Table(name = "refresh_tokens")
 @Getter
 @Setter
-@Builder
 @NoArgsConstructor
-@AllArgsConstructor
 public class RefreshToken {
 
     @Id
@@ -40,11 +38,29 @@ public class RefreshToken {
     private Instant revokedAt;
     private Instant lastUsedAt;
 
-    @Transient
-    private String rawValue;
-
-    public RefreshToken withRawValue(String rawValue) {
-        this.rawValue = rawValue;
-        return this;
+    public RefreshToken(
+            User user,
+            String tokenHash,
+            String deviceFingerprint,
+            Instant issuedAt,
+            Instant expiresAt
+    ) {
+        this.user = user;
+        this.tokenHash = tokenHash;
+        this.deviceFingerprint = deviceFingerprint;
+        this.issuedAt = issuedAt;
+        this.expiresAt = expiresAt;
+        this.revoked = false;
     }
+
+    public void revoke(Instant now) {
+        this.revoked = true;
+        this.revokedAt = now;
+        this.lastUsedAt = now;
+    }
+
+    public boolean isExpired(Instant now) {
+        return expiresAt.isBefore(now);
+    }
+
 }

@@ -1,3 +1,18 @@
 spring:
   datasource:
     url: jdbc:postgresql://localhost:5432/fineshyttt_dev
+    username: postgres
+    password: yash
+
+logging:
+  level:
+    org.hibernate.SQL: debug
+    org.hibernate.orm.jdbc.bind: trace
+    com.yash.fineshyttt: DEBUG
+
+# Dev-only: Use test keys (in production, use real RS256 keys)
+security:
+  jwt:
+    private-key-path: classpath:keys/jwt-private.pem
+    public-key-path: classpath:keys/jwt-public.pem
+    access-ttl-minutes: 900 # 15 hours for dev convenience

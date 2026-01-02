@@ -4,5 +4,6 @@ import java.time.Instant;
 
 public record RefreshTokenResult (
         String rawValue,
-        Instant expiresAt
+        Instant expiresAt,
+        Long userId
 ) {}

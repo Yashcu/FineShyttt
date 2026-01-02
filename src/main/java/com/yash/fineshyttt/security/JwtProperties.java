@@ -11,4 +11,5 @@ import org.springframework.context.annotation.Configuration;
 public class JwtProperties {
     private String secret;
     private long accessTokenTtlSeconds;
+    private long gracePeriodSeconds = 30;
 }

@@ -18,7 +18,7 @@ public class UserPrincipal implements UserDetails {
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return user.getRoles().stream()
-                .map(r -> new SimpleGrantedAuthority(r.getName()))
+                .map(r -> new SimpleGrantedAuthority("ROLE_" + r.getName()))
                 .toList();
     }
 
@@ -39,7 +39,7 @@ public class UserPrincipal implements UserDetails {
 
     @Override
     public boolean isAccountNonLocked() {
-        return user.isEnabled();
+        return true;
     }
 
     @Override
@@ -52,7 +52,11 @@ public class UserPrincipal implements UserDetails {
         return user.isEnabled();
     }
 
-    public Long getUserId() {
+    public Long userId() {
         return user.getId();
+    }
+
+    public User getUser() {
+        return user;
     }
 }

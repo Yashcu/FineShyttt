@@ -8,25 +8,53 @@ spring:
     datasource:
         url: jdbc:postgresql://localhost:5432/fineshyttt
         username: postgres
-        password: yash
-
-    jpa:
-        open-in-view: false
-        hibernate:
-            ddl-auto: validate
-        properties:
-            hibernate:
-                format_sql: true
+        password: ${DB_PASSWORD}
+        hikari:
+            maximum-pool-size: 10
+            minimum-idle: 5
+            connection-timeout: 30000
+            idle-timeout: 600000
+            max-lifetime: 1800000
+            leak-detection-threshold: 60000
 
     flyway:
         enabled: true
         locations: classpath:db/migration
+        validate-on-migrate: false
 
-logging:
-    level:
-        org.hibernate.SQL: debug
+    jpa:
+        hibernate:
+            ddl-auto: none
+        open-in-view: false
 
+# UPDATED: JWT Configuration (RS256)
 security:
     jwt:
-        secret: ${JWT_SECRET:dev-secret-change-me-32-bytes-min}
-        access-ttl-seconds: 900
+        private-key-path: classpath:keys/jwt-private.pem
+        public-key-path: classpath:keys/jwt-public.pem
+        access-ttl-minutes: 15
+        refresh-ttl-days: 7
+        reuse-grace-seconds: 30
+
+# Media configuration
+media:
+    upload-dir: uploads
+    base-url: http://localhost:8080
+    public-base-url: ${AWS_S3_PUBLIC_URL:https://your-bucket.s3.amazonaws.com}
+    bucket: ${AWS_S3_BUCKET:your-bucket-name}
+    max-file-size: 5242880
+    allowed-extensions: jpg,jpeg,png,gif,webp
+
+# UPDATED: Logging configuration
+logging:
+    level:
+        root: INFO
+        com.yash.fineshyttt: DEBUG
+        com.yash.fineshyttt.security: DEBUG
+        org.springframework.security: INFO
+    pattern:
+        console: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"
+    file:
+        name: logs/fineshyttt.log
+        max-size: 10MB
+        max-history: 30

@@ -1,33 +1,80 @@
-HELP.md
-target/
-.mvn/wrapper/maven-wrapper.jar
-!**/src/main/**/target/
-!**/src/test/**/target/
-
-### STS ###
-.apt_generated
-.classpath
-.factorypath
-.project
-.settings
-.springBeans
-.sts4-cache
-
-### IntelliJ IDEA ###
-.idea
-*.iws
-*.iml
-*.ipr
-
-### NetBeans ###
-/nbproject/private/
-/nbbuild/
-/dist/
-/nbdist/
-/.nb-gradle/
-build/
-!**/src/main/**/build/
-!**/src/test/**/build/
-
-### VS Code ###
+# =========================
+# IDE & Editor
+# =========================
+.idea/
 .vscode/
+*.iml
+*.iws
+*.ipr
+*.swp
+*.swo
+*~
+.DS_Store
+.env.local
+
+# =========================
+# Maven Build Output
+# =========================
+target/
+*.jar
+*.war
+*.zip
+pom.xml.tag
+pom.xml.releaseBackup
+pom.xml.next
+release.properties
+dependency-reduced-pom.xml
+buildNumber.properties
+.mvn/timing.properties
+.mvn/wrapper/maven-wrapper.jar
+
+# =========================
+# Gradle Build Output
+# =========================
+.gradle/
+build/
+gradle/
+*.gradletasknamecache
+
+# =========================
+# Security - NEVER COMMIT
+# =========================
+src/main/resources/keys/jwt-private.pem     # ⚠️ CRITICAL: Private key
+src/main/resources/keys/jwt-public.pem      # Can be committed (public key)
+.env                                         # Environment variables
+.env.local                                  # Local environment overrides
+application-prod.yml                        # Production config (if secrets)
+*.key
+*.pem
+*.p12
+
+# =========================
+# Runtime & Logs
+# =========================
+logs/
+*.log
+*.log.*
+*.out
+
+# =========================
+# Database & Cache
+# =========================
+*.db
+*.sqlite
+*.sqlite3
+.h2.server.properties
+
+# =========================
+# OS Files
+# =========================
+.DS_Store
+Thumbs.db
+.gitkeep
+
+# =========================
+# Project-Specific
+# =========================
+uploads/
+temp/
+tmp/
+*.tmp

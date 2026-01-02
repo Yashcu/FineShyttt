@@ -6,6 +6,7 @@ import lombok.*;
 @Entity
 @Table(name = "roles")
 @Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Role {
 
     @Id
@@ -15,10 +16,20 @@ public class Role {
     @Column(nullable = false, unique = true, length = 50)
     private String name;
 
-    protected Role() {}
-
     public Role(String name) {
         this.name = name;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Role role)) return false;
+        return name.equals(role.name);
+    }
+
+    @Override
+    public int hashCode() {
+        return name.hashCode();
     }
 
 }

@@ -105,7 +105,7 @@ CREATE TABLE products (
 );
 
 CREATE INDEX idx_products_category_id ON products(category_id);
-CREATE INDEX idx_products_active_category ON products(category_id) WHERE is_active = true;
+CREATE INDEX idx_products_active_category ON products(category_id, is_active);
 
 CREATE TABLE product_images (
                                 id BIGSERIAL PRIMARY KEY,
@@ -155,7 +155,7 @@ CREATE TABLE product_reviews (
                                  UNIQUE (product_id, user_id)
 );
 
-CREATE INDEX idx_product_reviews_approved ON product_reviews(product_id) WHERE is_approved = true;
+CREATE INDEX idx_product_reviews_approved ON product_reviews(product_id);
 
 -- =========================
 -- CART
@@ -175,7 +175,7 @@ CREATE TABLE carts (
 );
 
 CREATE INDEX idx_carts_user_id ON carts(user_id);
-CREATE INDEX idx_carts_session_id ON carts(session_id) WHERE session_id IS NOT NULL;
+CREATE INDEX idx_carts_session_id ON carts(session_id);
 
 CREATE TABLE cart_items (
                             id BIGSERIAL PRIMARY KEY,

@@ -9,10 +9,11 @@ import java.util.Set;
 
 @Entity
 @Table(name = "users")
-@Getter @Setter
-@NoArgsConstructor
-@AllArgsConstructor
+@Getter
+@Setter
 @Builder
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor
 public class User {
 
     @Id
@@ -30,24 +31,54 @@ public class User {
     private String phoneNumber;
 
     @Column(nullable = false)
+    @Builder.Default
     private boolean emailVerified = false;
 
-    @Column(nullable = false)
-    private boolean isEnabled = true;
+    @Builder.Default
+    @Column(name = "is_Enabled", nullable = false)
+    private boolean enabled = true;
 
     private Instant lastLoginAt;
 
-    @Column(nullable = false)
+    @Column(nullable = false, updatable = false)
     private Instant createdAt;
 
     @Column(nullable = false)
     private Instant updatedAt;
 
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
             name = "user_roles",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id")
     )
-    private Set<Role> roles = new HashSet<>();
+    private final Set<Role> roles = new HashSet<>();
+
+    public User(String email, String passwordHash) {
+        this.email = email;
+        this.passwordHash = passwordHash;
+    }
+
+    @PrePersist
+    void onCreate() {
+        this.createdAt = Instant.now();
+        this.updatedAt = this.createdAt;
+    }
+
+    @PreUpdate
+    void onUpdate() {
+        this.updatedAt = Instant.now();
+    }
+
+    public void markEmailVerified() {
+        this.emailVerified = true;
+    }
+
+    public void recordLogin() {
+        this.lastLoginAt = Instant.now();
+    }
+
+    public void changePassword(String newHash) {
+        this.passwordHash = newHash;
+    }
 }
